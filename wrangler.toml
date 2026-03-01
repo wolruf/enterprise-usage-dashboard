@@ -1,0 +1,22 @@
+name = "enterprise-usage-dashboard"
+main = "src/worker.js"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Static assets configuration
+assets = { directory = "./dist", binding = "ASSETS" }
+
+# KV namespace for storing user configuration
+# The namespace will be created during deployment and the ID will be populated automatically
+[[kv_namespaces]]
+binding = "CONFIG_KV"
+id = "dacc2646146d4f4f93614ca532b7b697"
+
+# Environment variables
+[vars]
+CLOUDFLARE_API_ENDPOINT = "https://api.cloudflare.com/client/v4/graphql"
+
+# Cron triggers for automatic threshold checks
+[triggers]
+crons = ["0 */6 * * *", "* * * * *"]  # Every 6h (pre-warm) + every 1m (Spectrum polling, only runs if enabled)
+
